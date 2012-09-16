@@ -1,0 +1,15 @@
+{
+  "name": "jinetd",
+  "version": "0.0.1",
+  "description": "Javascript super server",
+  "main": "jinetd.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dylan-evans/jinetd"
+  },
+  "author": "Dylan Evans",
+  "license": "BSD"
+}

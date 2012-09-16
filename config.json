@@ -1,0 +1,25 @@
+{
+    "include": "./config",
+    "service-path": [ "./services" ],
+    "service": {
+        "echo": {
+            "command": "cat",
+            "port": 7000
+        },
+        "lsbin": {
+            "command": "ls",
+            "args": ["-l", "/bin"],
+            "port": 7001
+        },
+        "lsdir": {
+            "command": "./lsdir.sh",
+            "port": 7002
+        },
+        "test-redirect": {
+            "action": "redirect",
+            "port": 7003,
+            "destination": "localhost:7001"
+        }
+    }
+}
+
