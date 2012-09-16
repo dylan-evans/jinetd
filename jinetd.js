@@ -219,8 +219,5 @@ if(process.argv.length > 0) {
             dmn.load(item);
         });
     }
-} else {
-    exports.Config = Config;
-    exports.Service = Service;
-}
+} 
 
