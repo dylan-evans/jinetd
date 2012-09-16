@@ -74,14 +74,25 @@ function Service(name, config) {
         });
     };
 
-    this.kill = function() {
+    this.kill = function(cb) {
+        var service = this;
+        if(cb !== undefined) {
+            this.once('killed', cb);
+        }
         //Perform extended INT, TERM, KILL routine then raise 'killed'
         this.workers.forEach(function(child) {
             child.kill('HUP');
         });
         setTimeout(function() {
-            this.workers.forEach(function(child) {
-
+            if(service.workers.length > 0) {
+                service.emit('killed');
+                return;
+            }
+            service.workers.forEach(function(child) {
+                setTimeout(function() {
+                    child.kill('KILL');
+                    service.emit('killed');
+                }, 1000);
             });
         }, 500);
     };
