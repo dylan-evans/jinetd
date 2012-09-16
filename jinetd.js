@@ -143,6 +143,7 @@ function Config(base) {
     
     this.loadfile = function(filename) {
         var config = this;
+        util.log("Loading " + filename);
         fs.readFile(filename, 'utf8',  function(err, data) {
             if(err) throw err;
             var cf = JSON.parse(data);
@@ -164,20 +165,19 @@ function Config(base) {
     this.load_service = function(name, scf) {
         var config = this;
         if(scf.action === undefined || scf.action === 'exec') {
-            console.log(">> loading " + name);
             if(scf.port === undefined) {
                 throw "Port is required";
             }
 
             var s = new Service(name, scf);
-            console.log("    port: " + s.port);
             config.service_table[name] = s;
             config.port_table[s.port] = s;
             s.start();
         } else if(scf.action === 'redirect') {
 
         } else {
-            console.log("Service '" + name + "' has unknown action: " + scf.action);
+            util.log("Service '" + name + "' has unknown action: " 
+                + scf.action);
         }
 
     };
@@ -197,7 +197,7 @@ var options = {
 
 // Main section is here
 if(process.argv.length > 0) {
-    console.log("loading");
+    util.log("Starting");
     var conf = [];
     for(var i = 2; i < process.argv.length; i++) {
         var arg = process.argv[i];
