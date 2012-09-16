@@ -84,16 +84,23 @@ function Service(name, config) {
             child.kill('HUP');
         });
         setTimeout(function() {
-            if(service.workers.length > 0) {
+            if(service.workers.length === 0) {
                 service.emit('killed');
                 return;
             }
             service.workers.forEach(function(child) {
-                setTimeout(function() {
-                    child.kill('KILL');
-                    service.emit('killed');
-                }, 1000);
+                child.kill('TERM');
             });
+            setTimeout(function() {
+                if(service.workers.length === 0) {
+                    service.emit('killed');
+                    return;
+                }
+                service.workers.forEach(function(child) {
+                    child.kill('KILL');
+                });
+                service.emit('killed');
+            }, 1000);
         }, 500);
     };
 }
@@ -127,7 +134,7 @@ function Config(base) {
                 }
                 if(stat.isDirectory()) {
                     fs.readdir(path, config.load);
-                } else {
+                } else if(path.match('\.json$')) {
                     config.loadfile(path);
                 }
             });
